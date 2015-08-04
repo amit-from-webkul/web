@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+  <t t-name="FieldIFrame">
+    <div>
+      <iframe t-att-class="'oe_form_field '+widget.widget_class"
+              t-att-style="widget.node.attrs.style"
+              width='100%' height='400px'
+              frameborder="0" webkitallowfullscreen='1' mozallowfullscreen='1' allowfullscreen='1' />
+    </div>
+  </t>
+  <tr t-extend="ListView.row">
+    <t t-jquery="t td t" t-operation="replace">
+      <t t-if="column.widget =='iframe' || column.type == 'iframe'"></t>
+      <t t-raw="render_cell(record, column)" />
+    </t>
+  </tr>
+</templates>
