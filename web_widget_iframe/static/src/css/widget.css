@@ -1,23 +1,59 @@
-.openerp .oe_form .oe_form_field_color input {
-    width: 100%;
+.oe_iframe_switch_positioner {
+    position: relative;
 }
 
-.openerp .oe_form .oe_form_field_color div {
-    border: 1px solid;
-    display: inline-block;
-    height: 14px;
-    margin-right: 10px;
-    position: relative;
-    top: 3px;
-    width: 40px;
+.oe_iframe_switch {
+    position: absolute;
+    top: 40px;
+    left: 383px;
+    width: 28px;
+    height: 28px;
+    background-image: -webkit-linear-gradient(top, white, #f0f0f0);
+    border: solid 1px #ccc;
+    border-radius:3px;
+    text-align: center;
+    line-height: 28px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    color: #666666;
+    cursor: pointer;
+    font-size: 14px;
 }
 
-.oe_list_field_color div {
-    border: 1px solid;
-    display: inline-block;
-    height: 14px;
-    margin-right: 10px;
-    position: relative;
-    top: 3px;
-    width: 40px;
+.oe_iframe_switch:hover{
+    background-image: -webkit-linear-gradient(top, #f4f4f4, #e4e4e4);
+}
+
+.oe_iframe_fullscreen .oe_iframe_switch {
+    position: fixed;
+    top: initial;
+    left: 10px;
+    bottom: 10px;
+}
+
+.oe_iframe_fullscreen {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: white;
+    margin:0;
+    padding:0;
+    border:none;
+    z-index: 1001;
+}
+
+.oe_iframe.oe_iframe_fullscreen .oe_iframe_content {
+    height: 100%;
+    border: none;
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+        -ms-box-shadow: none;
+         -o-box-shadow: none;
+            box-shadow: none;
+}
+
+.oe_form_field_iframe {
+    min-height: 400px;
 }
