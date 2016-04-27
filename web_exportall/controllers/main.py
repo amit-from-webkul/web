@@ -76,6 +76,7 @@ class CSVExportAll(ExportFormat, http.Controller):
         domain = data_dict.get('domain', False)
         import_compat = data_dict.get('import_compat', False)
         context = data_dict.get('context', req.context)
+        context['import_compat'] = import_compat
         Model = req.session.model(model)
         ids = itter_ids(Model.search(domain, 0, False, False, context))
 
@@ -153,6 +154,7 @@ class ExcelExportAll(ExportFormat, http.Controller):
         domain = data_dict.get('domain', False)
         import_compat = data_dict.get('import_compat', False)
         context = data_dict.get('context', req.context)
+        context['import_compat'] = import_compat
 
         Model = req.session.model(model)
         ids = itter_ids(Model.search(domain, 0, False, False, context))
