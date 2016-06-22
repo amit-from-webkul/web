@@ -60,6 +60,5 @@ Note: When updating the page prefix parameters, the record rules must be
     'qweb': [
         'static/src/xml/help_online.xml',
     ],
-    'installable': False,
-    'auto_install': False,
+    'installable': True,
 }
