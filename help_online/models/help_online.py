@@ -18,9 +18,9 @@ class HelpOnline(models.TransientModel):
         name = '%s-%s' % (page_prefix, model.replace('.', '-'))
         return name
 
-    def page_exists(self, name):
-        website_model = self.env['website']
-        return website_model.page_exists(name)
+    def get_existing_pages(self, name, limit=None):
+        website = self.env['website']
+        return website.search_pages(needle=name, limit=limit)
 
     def get_page_url(self, model, view_type, domain=None, context=None):
         user_model = self.env['res.users']
@@ -32,8 +32,9 @@ class HelpOnline(models.TransientModel):
         if res:
             description = res[0][1]
         name = self._get_view_name(model, view_type, domain, context)
-        if self.page_exists(name):
-            url = '/page/%s' % name
+        pages = self.get_existing_pages(name, limit=1)
+        if pages:
+            url = pages[0]['loc']
             if view_type:
                 url = url + '#' + view_type
             title = _('Help on %s') % description

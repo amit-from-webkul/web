@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data noupdate="1">
 	    <record id="online_help_confidential_rule" model="ir.rule">
 	        <field name="name">Online Help Hidden by Default</field>
@@ -29,4 +29,4 @@
 	        <field name="perm_create" eval="0"/><field name="perm_unlink" eval="0"/>
 	    </record>
     </data>
-</openerp>
+</odoo>

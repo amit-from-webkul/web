@@ -16,8 +16,8 @@
     'data': [
         'security/help_online_groups.xml',
         'security/help_online_rules.xml',
-        'views/export_help_wizard_view.xml',
-        'views/import_help_wizard_view.xml',
+        'wizards/export_help_wizard_view.xml',
+        'wizards/import_help_wizard_view.xml',
         'views/ir_ui_view_view.xml',
         'views/help_online_view.xml',
         'views/website_help_online.xml',

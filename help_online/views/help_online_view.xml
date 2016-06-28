@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- vim:fdn=3:
--->
-<openerp>
+<odoo>
     <data>
         <template id="assets_backend" name="help.online.assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
@@ -25,4 +23,4 @@
         <menuitem id="menu_help_import" name="Import Help Online" parent="menu_help" sequence="20" action="action_import_help_wizard" groups="help_online_group_writer"/>
         <menuitem id="menu_help_export" name="Export Help Online" parent="menu_help" sequence="30" action="action_export_help_wizard" groups="help_online_group_writer"/>
     </data>
-</openerp>
+</odoo>

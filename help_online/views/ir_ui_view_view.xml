@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data noupdate="0">
 
         <record id="view_view_search" model="ir.ui.view">
@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="base.view_view_search"/>
             <field name="model">ir.ui.view</field>
             <field name="arch" type="xml">
-                <xpath expr="//filter[@string='QWeb']" position="after">
+                <xpath expr="//filter[last()]" position="after">
                     <filter name="website" string="Website Page" domain="[('type', '=', 'qweb'),('page', '=', True)]"/>
                 </xpath>
             </field>
@@ -25,4 +25,4 @@
         </record>
 
     </data>
-</openerp>
+</odoo>

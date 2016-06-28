@@ -3,6 +3,4 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from . import help_online
-from . import export_help_wizard
-from . import import_help_wizard
 from . import ir_model
