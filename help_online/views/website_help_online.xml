@@ -2,14 +2,16 @@
 <odoo>
     <data>
 
-        <template id="assets_editor" inherit_id="website.assets_editor"
+        <!-- TODO IN 9.0 CKEditor is replaced by summernote. This one doesn't provide
+        a way to insert/edit anchor elements. -->  
+        <!-- template id="assets_editor" inherit_id="website.assets_editor"
             name="Help online customization">
             <xpath expr="." position="inside">
                 <script type="text/javascript"
                     src="/help_online/static/src/js/website_help_online.editor.js"
                     groups="base.group_website_publisher"></script>
             </xpath>
-        </template>
+        </template -->
 
     </data>
 </odoo>

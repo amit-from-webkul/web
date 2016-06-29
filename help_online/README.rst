@@ -28,6 +28,15 @@ Usage
    :alt: Try me on Runbot
    :target: https://runbot.odoo-community.org/runbot/162/9.0
 
+
+Known issues / Roadmap
+======================
+
+Even if the generated  urls to the documentation contains an anchor (website/hel-xx#view_type),
+it's no more possible to insert/edit anchors elemetns into the website since this functionnality is not supported
+by the new html editor in Odoo 9.0 (summernote).
+
+
 Bug Tracker
 ===========
 
