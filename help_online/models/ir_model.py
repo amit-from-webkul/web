@@ -7,7 +7,7 @@ from openerp import models, api
 from lxml import etree as ET
 
 
-class ir_model_data(models.Model):
+class IrModelData(models.Model):
     _inherit = 'ir.model.data'
 
     @api.model
@@ -22,14 +22,14 @@ class ir_model_data(models.Model):
                 xml_str = self.manageImageReferences(values['arch'], module)
                 values['arch'] = xml_str
 
-        return super(ir_model_data, self)._update(model,
-                                                  module,
-                                                  values,
-                                                  xml_id=xml_id,
-                                                  store=store,
-                                                  noupdate=noupdate,
-                                                  mode=mode,
-                                                  res_id=res_id)
+        return super(IrModelData, self)._update(model,
+                                                module,
+                                                values,
+                                                xml_id=xml_id,
+                                                store=store,
+                                                noupdate=noupdate,
+                                                mode=mode,
+                                                res_id=res_id)
 
     def manageImageReferences(self, xml_str, module):
         parser = ET.XMLParser(remove_blank_text=True)

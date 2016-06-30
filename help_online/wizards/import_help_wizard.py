@@ -33,19 +33,21 @@ class ImportHelpWizard(models.TransientModel):
 
     source_file = fields.Binary('Source File')
 
-    @api.one
+    @api.multi
     def import_help(self):
-        xmlfile = StringIO(base64.decodestring(self.source_file))
-        doc = etree.parse(xmlfile)
-        relaxng = etree.RelaxNG(
-            etree.parse(os.path.join(config['root_path'], 'import_xml.rng')))
-        try:
-            relaxng.assert_(doc)
-        except Exception:
-            _logger.info('The XML file does not fit the required schema !',
-                         exc_info=True)
-            _logger.info(misc.ustr(relaxng.error_log.last_error))
-            raise
-        obj = XmlImport(self.env.cr, self._module, idref={}, mode='init',
-                        report=None, noupdate=False, xml_filename=None)
-        obj.parse(doc.getroot(), mode='init')
+        for this in self:
+            xmlfile = StringIO(base64.decodestring(this.source_file))
+            doc = etree.parse(xmlfile)
+            relaxng = etree.RelaxNG(
+                etree.parse(
+                    os.path.join(config['root_path'], 'import_xml.rng')))
+            try:
+                relaxng.assert_(doc)
+            except Exception:
+                _logger.info('The XML file does not fit the required schema !',
+                             exc_info=True)
+                _logger.info(misc.ustr(relaxng.error_log.last_error))
+                raise
+            obj = XmlImport(self.env.cr, self._module, idref={}, mode='init',
+                            report=None, noupdate=False, xml_filename=None)
+            obj.parse(doc.getroot(), mode='init')

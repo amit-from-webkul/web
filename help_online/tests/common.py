@@ -4,7 +4,6 @@
 
 import os
 import sys
-import base64
 from lxml import etree as ET
 
 from openerp.tools.convert import convert_xml_import

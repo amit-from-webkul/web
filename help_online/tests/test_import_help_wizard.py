@@ -2,17 +2,10 @@
 # Copyright 2016 ACSONE SA/NV (<http://acsone.eu>)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import os
-import sys
-import logging
 import base64
-from lxml import etree as ET
 
 import openerp.tests.common as common
-from openerp.tools.convert import convert_xml_import
 from .common import TestWizardCommon
-
-_logger = logging.getLogger(__name__)
 
 
 class TestImportHelpWizard(TestWizardCommon, common.TransactionCase):

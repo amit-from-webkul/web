@@ -8,6 +8,7 @@
     'author': "ACSONE SA/NV,Odoo Community Association (OCA)",
     'maintainer': 'ACSONE SA/NV',
     'website': 'http://www.acsone.eu',
+    'license': 'AGPL-3',
     'category': 'Documentation',
     'depends': [
         'base',
