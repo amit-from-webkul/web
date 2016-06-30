@@ -20,7 +20,6 @@
         'wizards/import_help_wizard_view.xml',
         'views/ir_ui_view_view.xml',
         'views/help_online_view.xml',
-        'views/website_help_online.xml',
         'data/ir_config_parameter_data.xml',
     ],
     'qweb': [
