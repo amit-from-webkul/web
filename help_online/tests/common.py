@@ -67,6 +67,14 @@ class TestWizardCommon(object):
                           'img',
                           attrib={'class': 'img-thumbnail',
                                   'src': src})
+            imgDivNode = ET.SubElement(bodyDivNode,
+                                       'div',
+                                       attrib={'style': 'text-align: left;'})
+            src = "/web/image/%s" % str(imgId)
+            ET.SubElement(imgDivNode,
+                          'img',
+                          attrib={'class': 'img-thumbnail',
+                                  'src': src})
         arch = ET.tostring(rootNode, encoding='utf-8', xml_declaration=False)
         vals = {
             'name': pageName,

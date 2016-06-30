@@ -90,7 +90,7 @@ class ExportHelpWizard(models.TransientModel):
                     _id = kwargs.get('id')
                     model = kwargs.get('model', 'ir.attachment')
                     if _id and model:
-                        _id, _, unique = _id.partition('_')
+                        _id, _, unique = str(_id).partition('_')
                         image = self.env[model].browse(int(_id))
                 if (not image or
                     not image.exists() or
