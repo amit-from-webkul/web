@@ -33,7 +33,7 @@ Known issues / Roadmap
 ======================
 
 Even if the generated  urls to the documentation contains an anchor (website/hel-xx#view_type),
-it's no more possible to insert/edit anchors elemetns into the website since this functionnality is not supported
+it's no more possible to insert/edit anchors elements into the website since this functionnality is not supported
 by the new html editor in Odoo 9.0 (summernote).
 
 
@@ -58,12 +58,12 @@ Contributors
 Maintainer
 ----------
 
-.. image:: http://odoo-community.org/logo.png
+.. image:: https://odoo-community.org/logo.png
    :alt: Odoo Community Association
-   :target: http://odoo-community.org
+   :target: https://odoo-community.org
 
 This module is maintained by the OCA.
 
 OCA, or the Odoo Community Association, is a nonprofit organization whose mission is to support the collaborative development of Odoo features and promote its widespread use.
 
-To contribute to this module, please visit http://odoo-community.org.
+To contribute to this module, please visit https://odoo-community.org.
