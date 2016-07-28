@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="assets_backend" name="calendar description assets"
+            inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript"
+                    src="/web_calendar_description/static/src/js/web_calendar_description.js" />
+            </xpath>
+        </template>
+    </data>
+</openerp>
