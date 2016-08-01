@@ -67,7 +67,7 @@ class ExportHelpWizard(models.TransientModel):
 
     def _manage_images_on_page(self, page_node, data_node, exported_resources):
         """
-            - Extract images from page and generate an node
+            - Extract images from page and generate an xml node
             - Replace db id in url with xml id
         """
         img_model = 'ir.attachment'
