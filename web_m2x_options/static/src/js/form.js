@@ -17,6 +17,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                    'web_m2x_options.m2o_dialog',
                    'web_m2x_options.favorites',
                    'web_m2x_options.open_badge',
+                   'web_m2x_options.open_color',
                   ];
 
     var M2ODialog = Dialog.extend({
@@ -337,6 +338,11 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
     });
 
     form_relational.FieldMany2ManyTags.include({
+        events: {
+            'click .badge': 'action_badge',
+            'mousedown .o_colorpicker span': 'update_color',
+            'focusout .o_colorpicker': 'close_color_picker',
+        },
 
         show_error_displayer: function () {
             if ((typeof this.options.m2o_dialog === 'undefined' && this.can_create) ||
@@ -480,29 +486,32 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 return values;
             })
         },
-        render_value: function(){
+
+        action_badge: function(ev){
             var self = this;
-            return jQuery.when(this._super.apply(this, arguments))
-            .then(function(){
-                var open_badge = (self.is_option_set(self.options.open_badge) || 
+            var open_badge = (self.is_option_set(self.options.open_badge) ||
                     (_.isUndefined(self.options.open_badge) &&
-                     self.is_option_set(self.view.ir_options['web_m2x_options.open_badge']))
-                    );
-                if(open_badge){
-                    self.$el.find('.badge')
-                    .css('cursor', 'pointer')
-                    .click(function(e){
-                        var id = parseInt(jQuery(this).attr('data-id'));
-                        self.do_action({
-                            type: 'ir.actions.act_window',
-                            res_model: self.field.relation,
-                            views: [[false, 'form']],
-                            res_id: id,
-                            target: 'new',
-                        });
-                    });
-                }
-            });
+                    self.is_option_set(self.view.ir_options['web_m2x_options.open_badge']))
+                );
+            var open_color = (self.is_option_set(self.options.open_color) ||
+                    (_.isUndefined(self.options.open_color) &&
+                     self.is_option_set(self.view.ir_options['web_m2x_options.open_color']))
+                );
+            if ((open_color && !open_badge) || (!open_color && !open_badge)){
+                self.open_color_picker(ev);
+            }
+            // if open_bage is true open the tag record even if the open_color
+            // is true
+            if(open_badge){
+                var id = parseInt(jQuery(ev.handleObj.selector).attr('data-id'));
+                self.do_action({
+                    type: 'ir.actions.act_window',
+                    res_model: self.field.relation,
+                    views: [[false, 'form']],
+                    res_id: id,
+                    target: 'new',
+                });
+            }
         },
     });
 });
