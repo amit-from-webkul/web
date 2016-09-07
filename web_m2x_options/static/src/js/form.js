@@ -14,7 +14,9 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                    'web_m2x_options.create_edit',
                    'web_m2x_options.limit',
                    'web_m2x_options.search_more',
-                   'web_m2x_options.m2o_dialog',];
+                   'web_m2x_options.m2o_dialog',
+                   'web_m2x_options.favorites',
+                  ];
 
     var M2ODialog = Dialog.extend({
         template: "M2ODialog",
@@ -462,29 +464,6 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
 
                 return values;
             })
-        },
-
-        render_value: function(){
-            var self = this;
-            return jQuery.when(this._super.apply(this, arguments))
-            .then(function()
-            {
-                if(self.options.open)
-                {
-                    self.$el.find('.oe_tag')
-                    .css('cursor', 'pointer')
-                    .click(function(e)
-                    {
-                        var id = parseInt(jQuery(this).attr('data-id'));
-                        self.do_action({
-                            type: 'ir.actions.act_window',
-                            res_model: self.field.relation,
-                            views: [[false, 'form']],
-                            res_id: id,
-                        });
-                    });
-                }
-            });
         },
     });
 });
