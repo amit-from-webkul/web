@@ -52,7 +52,6 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
     form_relational.FieldMany2One.include({
 
         start: function() {
-            console.log("staaaaartssss");
             this._super.apply(this, arguments);
             return this.get_options();
         },
@@ -97,6 +96,18 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             }
         },
 
+        get_search_favorites: function(){
+            var self = this;
+            var model = self.view.model;
+            var restore_favorites = JSON.parse(localStorage.getItem(model));
+            if (restore_favorites) {
+                if (!_.isUndefined(restore_favorites[self.name])){
+                    return ['id', 'in', restore_favorites[self.name]];
+                }
+            }
+            return [];
+        },
+
         get_search_result: function (search_val) {
             var Objects = new Model(this.field.relation);
             var def = $.Deferred();
@@ -125,6 +136,13 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             var dataset = new data.DataSet(this, this.field.relation,
                                                    self.build_context());
             var blacklist = this.get_search_blacklist();
+            if(search_val == "" && (this.is_option_set(this.options.favorites) || _.isUndefined(this.options.favorites) &&  this.is_option_set(self.view.ir_options['web_m2x_options.favorites']))){
+                var favorites_list = self.get_search_favorites();
+                if (!_(favorites_list).isEmpty()){
+                    domain_list.push(favorites_list);
+                }
+            }
+
             this.last_query = search_val;
 
             var search_result = this.orderer.add(dataset.name_search(
@@ -180,6 +198,15 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                                     }
                                     def.resolve(values);
                                 });
+                }
+
+                // add label favorites if favorites option is set and search_val
+                // is empty
+                if(search_val == "" && (self.is_option_set(self.options.favorites) || _.isUndefined(self.options.favorites) &&  self.is_option_set(self.view.ir_options['web_m2x_options.favorites']))){
+                    values.unshift({
+                        label: _t("Favories:"),
+                        classname: 'oe_m2o_dropdown_option'
+                    });
                 }
 
                 // search more... if more results that max
@@ -261,6 +288,48 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             });
 
             return def;
+        },
+
+        update_favorites: function(model){
+            var self = this;
+            // check if the localstorage has some items for the current model
+            if (localStorage.getItem(model)) {
+                var restore_favorites = JSON.parse(localStorage.getItem(model));
+                if (restore_favorites[self.name]) {
+                    var queue = restore_favorites[self.name];
+                    if (queue.indexOf(self.get_value(true)) < 0 && self.get_value(true)){
+                        if (queue.length < 5) {
+                            queue.push(self.get_value(true));
+                        }else {
+                            queue.shift();
+                            queue.push(self.get_value(true));
+                        }
+                        restore_favorites[self.name] = queue;
+                    }
+                }else{
+                    if (self.get_value(true)){
+                        restore_favorites[self.name] = [self.get_value(true)];
+                    }
+                }
+                localStorage.setItem(model, JSON.stringify(restore_favorites));
+            }else {
+                if (self.get_value(true)){
+                    var values = {}
+                    values[self.name] = [self.get_value(true)]
+                    localStorage.setItem(model, JSON.stringify(values));
+                }
+            }
+        },
+
+        commit_value: function() {
+            var self = this;
+            // if the field value has changed and has favorites option
+            if (self._dirty_flag){
+                if (self.is_option_set(self.options.favorites) || _.isUndefined(self.options.favorites) &&  self.is_option_set(self.view.ir_options['web_m2x_options.favorites'])){
+                    self.update_favorites(self.view.model);
+                }
+            }
+            return self._super();
         }
     });
 
