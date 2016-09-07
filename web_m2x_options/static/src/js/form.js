@@ -16,6 +16,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                    'web_m2x_options.search_more',
                    'web_m2x_options.m2o_dialog',
                    'web_m2x_options.favorites',
+                   'web_m2x_options.open_badge',
                   ];
 
     var M2ODialog = Dialog.extend({
@@ -366,6 +367,20 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             return this.view.ir_options_loaded;
         },
 
+        is_option_set: function(option) {
+            if (_.isUndefined(option)) {
+                return false
+            }
+            var is_string = typeof option === 'string'
+            var is_bool = typeof option === 'boolean'
+            if (is_string) {
+                return option === 'true' || option === 'True'
+            } else if (is_bool) {
+                return option
+            }
+            return false
+        },
+
         /**
         * Call this method to search using a string.
         */
@@ -464,6 +479,30 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
 
                 return values;
             })
+        },
+        render_value: function(){
+            var self = this;
+            return jQuery.when(this._super.apply(this, arguments))
+            .then(function(){
+                var open_badge = (self.is_option_set(self.options.open_badge) || 
+                    (_.isUndefined(self.options.open_badge) &&
+                     self.is_option_set(self.view.ir_options['web_m2x_options.open_badge']))
+                    );
+                if(open_badge){
+                    self.$el.find('.badge')
+                    .css('cursor', 'pointer')
+                    .click(function(e){
+                        var id = parseInt(jQuery(this).attr('data-id'));
+                        self.do_action({
+                            type: 'ir.actions.act_window',
+                            res_model: self.field.relation,
+                            views: [[false, 'form']],
+                            res_id: id,
+                            target: 'new',
+                        });
+                    });
+                }
+            });
         },
     });
 });
