@@ -156,7 +156,6 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 });
 
                 // Search result value colors
-
                 if (self.colors && self.field_color) {
                     var value_ids = [];
                     for (var index in values) {
@@ -183,7 +182,6 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 }
 
                 // search more... if more results that max
-
                 if (values.length > self.limit || self.search_more) {
                     values = values.slice(0, self.limit);
                     values.push({
@@ -393,6 +391,26 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
 
                 return values;
             })
+        },
+
+       render_value: function(){
+           var self = this;
+           return jQuery.when(this._super.apply(this, arguments))
+           .then(function(){
+               if(self.options.open){
+                   self.$el.find('.badge')
+                   .css('cursor', 'pointer')
+                   .click(function(e){
+                       var id = parseInt(jQuery(this).attr('data-id'));
+                       self.do_action({
+                           type: 'ir.actions.act_window',
+                           res_model: self.field.relation,
+                           views: [[false, 'form']],
+                           res_id: id,
+                       });
+                   });
+               }
+            });
         },
     });
 });
