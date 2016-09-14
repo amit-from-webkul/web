@@ -114,11 +114,6 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 this.limit = this.options.limit;
             }
 
-            // add options search_more to force enable or disable search_more button
-            if (this.is_option_set(this.options.search_more) || _.isUndefined(this.options.search_more) && this.is_option_set(self.view.ir_options['web_m2x_options.search_more'])) {
-                this.search_more = true
-            }
-
             // add options field_color and colors to color item(s) depending on field_color value
             this.field_color = this.options.field_color
             this.colors = this.options.colors
@@ -136,7 +131,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 self.build_context()));
 
             var create_rights;
-            if (!(self.options && (self.options.create || self.options.create_edit))) {
+            if (!(self.options && (self.is_option_set(self.options.create) || self.is_option_set(self.options.create_edit)))) {
                 create_rights = new Model(this.field.relation).call(
                     "check_access_rights", ["create", false]);
             }
@@ -183,7 +178,11 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 }
 
                 // search more... if more results that max
-                if (values.length > self.limit || self.search_more) {
+                var can_search_more = (self.options && self.is_option_set(self.options.search_more)),
+                    search_more_undef = _.isUndefined(self.options.search_more) && _.isUndefined(self.view.ir_options['web_m2x_options.search_more']),
+                    search_more = self.is_option_set(self.view.ir_options['web_m2x_options.search_more']);
+
+                if (values.length > self.limit && (can_search_more || search_more_undef || search_more)) {
                     values = values.slice(0, self.limit);
                     values.push({
                         label: _t("Search More..."),
@@ -207,11 +206,11 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                     return x[1];
                 });
                 var quick_create = (
-                    self.options && (self.options.create ||
-                                     self.options.quick_create)
+                    self.options && (self.is_option_set(self.options.create) ||
+                                     self.is_option_set(self.options.quick_create))
                 )
                 var m2x_create_undef = _.isUndefined(self.view.ir_options['web_m2x_options.create'])
-                var m2x_create = (self.view.ir_options['web_m2x_options.create'] == "True") || m2x_create_undef;
+                var m2x_create = (self.is_option_set(self.view.ir_options['web_m2x_options.create'])) || m2x_create_undef;
 
                 if (quick_create && ((m2x_create_undef && can_create) ||
                                          m2x_create)) {
@@ -233,12 +232,12 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
 
                 // create...
                 var create_edit = (
-                    self.options && (self.options.create ||
-                                     self.options.create_edit)
+                    self.options && (self.is_option_set(self.options.create) ||
+                                     self.is_option_set(self.options.create_edit))
                 );
 
                 var m2x_create_edit_undef = _.isUndefined(self.view.ir_options['web_m2x_options.create_edit'])
-                var m2x_create_edit = (self.view.ir_options['web_m2x_options.create_edit'] == "True") ||  m2x_create_undef;
+                var m2x_create_edit = (self.is_option_set(self.view.ir_options['web_m2x_options.create_edit'])) ||  m2x_create_undef;
 
                 if (create_edit && ((m2x_create_edit_undef && can_create) ||
                                         m2x_create_edit)) {
@@ -364,11 +363,11 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 }
                 // quick create
                 var quick_create = !(
-                        self.options && (self.options.create ||
-                                     self.options.quick_create)
+                        self.options && (self.is_option_set(self.options.create) ||
+                            self.is_option_set(self.options.quick_create))
                 );
                 var m2x_create_undef = _.isUndefined(self.view.ir_options['web_m2x_options.create'])
-                var m2x_create = (self.view.ir_options['web_m2x_options.create'] == "True");
+                var m2x_create = self.is_option_set(self.view.ir_options['web_m2x_options.create']);
 
                 if (quick_create && (m2x_create_undef || m2x_create)) {
 
@@ -387,11 +386,11 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
 
                 // create...
                 var create_edit = (
-                    self.options && (self.options.create ||
-                                     self.options.create_edit)
+                    self.options && (self.is_option_set(self.options.create) ||
+                        self.is_option_set(self.options.create_edit))
                 )
                 var m2x_create_edit_undef = _.isUndefined(self.view.ir_options['web_m2x_options.create_edit'])
-                var m2x_create_edit = self.view.ir_options['web_m2x_options.create_edit'] == "True"
+                var m2x_create_edit = self.is_option_set(self.view.ir_options['web_m2x_options.create_edit'])
 
                 if (create_edit && (m2x_create_edit_undef || m2x_create_edit)) {
 
