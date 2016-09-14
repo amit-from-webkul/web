@@ -294,6 +294,20 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             return this.view.ir_options_loaded;
         },
 
+        is_option_set: function(option) {
+            if (_.isUndefined(option)) {
+                return false
+            }
+            var is_string = typeof option === 'string'
+            var is_bool = typeof option === 'boolean'
+            if (is_string) {
+                return option === 'true' || option === 'True'
+            } else if (is_bool) {
+                return option
+            }
+            return false
+        },
+
         /**
         * Call this method to search using a string.
         */
