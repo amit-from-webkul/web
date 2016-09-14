@@ -4,6 +4,7 @@
 odoo.define('web_m2x_options.web_m2x_options', function (require) {
     "use strict";
 
+    var $ = require("$");
     var core = require('web.core'),
         data = require('web.data'),
         Dialog = require('web.Dialog'),
@@ -395,13 +396,13 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
 
        render_value: function(){
            var self = this;
-           return jQuery.when(this._super.apply(this, arguments))
+           return $.when(this._super.apply(this, arguments))
            .then(function(){
                if(self.options.open){
                    self.$el.find('.badge')
                    .css('cursor', 'pointer')
                    .click(function(e){
-                       var id = parseInt(jQuery(this).attr('data-id'));
+                       var id = parseInt($(e.target).attr('data-id'));
                        self.do_action({
                            type: 'ir.actions.act_window',
                            res_model: self.field.relation,
