@@ -263,7 +263,14 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
     });
 
     form_relational.FieldMany2ManyTags.include({
-
+        events: {
+            'click .o_delete': function(e) {
+                this.remove_id($(e.target).parent().data('id'));
+            },
+            'click .badge': 'open_badge',
+            'mousedown .o_colorpicker span': 'update_color',
+            'focusout .o_colorpicker': 'close_color_picker',
+        },
         show_error_displayer: function () {
             if ((typeof this.options.m2o_dialog === 'undefined' && this.can_create) ||
                 this.options.m2o_dialog) {
@@ -407,24 +414,24 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             })
         },
 
-       render_value: function(){
-           var self = this;
-           return $.when(this._super.apply(this, arguments))
-           .then(function(){
-               if(self.options.open){
-                   self.$el.find('.badge')
-                   .css('cursor', 'pointer')
-                   .click(function(e){
-                       var id = parseInt($(e.target).attr('data-id'));
-                       self.do_action({
-                           type: 'ir.actions.act_window',
-                           res_model: self.field.relation,
-                           views: [[false, 'form']],
-                           res_id: id,
-                       });
-                   });
-               }
-            });
+        open_badge: function(ev){
+            var self = this;
+            var open = (self.options && self.is_option_set(self.options.open));
+            if(open){
+                self.mutex.exec(function(){
+                    var id = parseInt($(ev.handleObj.selector).attr('data-id'));
+                    self.do_action({
+                        type: 'ir.actions.act_window',
+                        res_model: self.field.relation,
+                        views: [[false, 'form']],
+                        res_id: id,
+                        target: "new"
+                    });
+                }.bind(this));
+            }else{
+                self.open_color_picker(ev);
+            }
         },
-    });
+
+     });
 });
