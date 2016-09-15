@@ -311,28 +311,42 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             var self = this,
                 mru_option = 'web_m2x_options_mru';
             var key = self.compute_mru_key();
-
             // check if the localstorage has some items for the current model
             if (localStorage.getItem(mru_option)) {
                 var restore_mru_list = JSON.parse(localStorage.getItem(mru_option));
                 if (restore_mru_list[key]) {
                     var queue = restore_mru_list[key];
+                    // if the element doesn't exist in the stack
                     if (queue.indexOf(self.get_value(true)) < 0 && self.get_value(true)){
                         if (queue.length < 5) {
-                            queue.push(self.get_value(true));
+                            // add the new element at the beginning
+                            queue.unshift(self.get_value(true));
                         }else {
-                            queue.shift();
-                            queue.push(self.get_value(true));
+                            // remove the last element
+                            queue.pop();
+                            // add the new element at the beginning
+                            queue.unshift(self.get_value(true));
                         }
                         restore_mru_list[key] = queue;
+                    }else{
+                        // if the element already exist in the stack
+                        if (queue.indexOf(self.get_value(true)) >= 0 && self.get_value(true)){
+                            var index = queue.indexOf(self.get_value(true));
+                            // remove the element from the list
+                            queue.splice(index, 1);
+                            // and put it back at the beginning
+                            queue.unshift(self.get_value(true));
+                        }
                     }
                 }else{
+                    // if the element is the first one
                     if (self.get_value(true)){
                         restore_mru_list[key] = [self.get_value(true)];
                     }
                 }
                 localStorage.setItem(mru_option, JSON.stringify(restore_mru_list));
             }else {
+                // first time to create an entry in the localstorage
                 if (self.get_value(true)){
                     var values = {}
                     values[key] = [self.get_value(true)]
