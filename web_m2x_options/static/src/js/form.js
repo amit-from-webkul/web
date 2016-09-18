@@ -104,16 +104,8 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             var self = this,
                 model = self.view.model,
                 db = self.session.db,
-                view_id = null;
-            if (self.view.view_id){
-                view_id = "v_" + self.view.view_id
-            }else{
-                if(self.view.options.action != null){
-                    view_id = "a_" + self.view.options.action.id;
-                }else{
-                    view_id = "a_" + self.view.dataset.parent_view.options.action.id
-                }
-            }
+                view_id = self.view.fields_view.view_id || self.view.dataset.parent_view.fields_view.view_id;
+            console.log('view id', view_id);
             return db + "/" + model + "/" + view_id + "/" + self.name;
         },
 
