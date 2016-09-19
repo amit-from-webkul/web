@@ -105,7 +105,6 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 model = self.view.model,
                 db = self.session.db,
                 view_id = self.view.fields_view.view_id || self.view.dataset.parent_view.fields_view.view_id;
-            console.log('view id', view_id);
             return db + "/" + model + "/" + view_id + "/" + self.name;
         },
 
@@ -219,7 +218,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                     if (!_(mru_list).isEmpty() && !_(values).isEmpty()){
                         values.unshift({
                             label: _t("Most Recently Used:"),
-                            classname: 'oe_m2o_dropdown_option',
+                            // classname: 'oe_m2o_dropdown_option',
                         });
                     }
                 }
