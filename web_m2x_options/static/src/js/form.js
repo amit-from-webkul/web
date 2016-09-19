@@ -146,7 +146,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             var domain_list = [];
             var blacklist = this.get_search_blacklist();
             if(!_(blacklist).isEmpty()){
-                domain_list.push(blacklist);
+                domain_list.push(['id', 'not in', blacklist]);
             }
             var can_search_mru = (self.options && self.is_option_set(self.options.search_mru)),
                 search_mru_undef = _.isUndefined(self.options.search_mru),
