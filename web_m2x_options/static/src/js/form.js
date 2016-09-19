@@ -110,7 +110,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
         },
 
         get_search_mru: function(){
-            var mru_option = 'web_m2x_options_mru';
+            var mru_option = 'web_m2x_options_mru',
                 self = this;
             var restore_mru_list = JSON.parse(localStorage.getItem(mru_option)),
                 key = self.compute_mru_key();
