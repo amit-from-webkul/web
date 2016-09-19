@@ -197,7 +197,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                                     self._search_create_popup("search", data);
                                 });
                         },
-                        classname: 'oe_m2o_dropdown_option'
+                        classname: 'oe_m2o_dropdown_option o_m2o_dropdown_option' 
                     });
                 }
 
@@ -222,7 +222,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                             action: function () {
                                 self._quick_create(search_val);
                             },
-                            classname: 'oe_m2o_dropdown_option'
+                            classname: 'oe_m2o_dropdown_option o_m2o_dropdown_option' 
                         });
                     }
                 }
@@ -241,7 +241,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                                 "form", undefined,
                                 self._create_context(search_val));
                         },
-                        classname: 'oe_m2o_dropdown_option'
+                        classname: 'oe_m2o_dropdown_option o_m2o_dropdown_option' 
                     });
                 }
                 // Check if colors specified to wait for RPC
@@ -357,7 +357,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                                 self._search_create_popup("search", data);
                             });
                         },
-                        classname: 'oe_m2o_dropdown_option'
+                        classname: 'oe_m2o_dropdown_option o_m2o_dropdown_option' 
                     });
                 }
                 // quick create
@@ -376,7 +376,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                             action: function() {
                                 self._quick_create(search_val);
                             },
-                            classname: 'oe_m2o_dropdown_option'
+                            classname: 'oe_m2o_dropdown_option o_m2o_dropdown_option' 
                         });
                     }
                 }
@@ -394,7 +394,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                         action: function() {
                             self._search_create_popup("form", undefined, self._create_context(search_val));
                         },
-                        classname: 'oe_m2o_dropdown_option'
+                        classname: 'oe_m2o_dropdown_option o_m2o_dropdown_option' 
                     });
                 }
 
