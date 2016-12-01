@@ -113,18 +113,19 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             return db + "/" + model + "/" + view_id + "/" + self.name;
         },
 
-        get_search_mru: function(){
+        get_mru_ids: function(){
             var mru_option = 'web_m2x_options_mru',
                 self = this;
-            var restore_mru_list = JSON.parse(localStorage.getItem(mru_option)),
+            var restore_mru_ids = JSON.parse(localStorage.getItem(mru_option)),
                 key = self.compute_mru_key();
-            if (restore_mru_list) {
-                if (!_.isUndefined(restore_mru_list[key])){
-                    return ['id', 'in', restore_mru_list[key]];
+            if (restore_mru_ids) {
+                if (!_.isUndefined(restore_mru_ids[key])){
+                    return restore_mru_ids[key];
                 }
             }
             return [];
         },
+
         get_search_result: function (search_val) {
             var Objects = new Model(this.field.relation);
             var def = $.Deferred();
@@ -156,11 +157,11 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 search_mru_undef = _.isUndefined(self.options.search_mru),
                 search_mru = self.is_option_set(self.view.ir_options['web_m2x_options.search_mru']);
 
-            var mru_list = self.get_search_mru();
+            var mru_ids = self.get_mru_ids();
             var in_search_mru = false;
             if(search_val == "" && (can_search_mru || (search_mru_undef && search_mru))){
-                if (!_(mru_list).isEmpty()){
-                    domain_list.push(mru_list);
+                if (!_(mru_ids).isEmpty()){
+                    domain_list.push(['id', 'in', mru_ids]);
                     in_search_mru = true;
                 }
             }
@@ -197,6 +198,14 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                     }
                     return val;
                 });
+                // If we are in a mru search, reorder the result list in the
+                // same order as the one stored to keep the saved preference
+                // order (The most recent ones first)
+                if (in_search_mru){
+                    values = _(values).sortBy(function(item){
+                        return mru_ids.indexOf(item.id);
+                    });
+                }
 
                 // Search result value colors
                 if (self.colors && self.field_color) {
@@ -299,15 +308,15 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             return def;
         },
 
-        update_mru_list: function(){
+        update_mru_ids: function(){
             var self = this,
                 mru_option = 'web_m2x_options_mru';
             var key = self.compute_mru_key();
             // check if the localstorage has some items for the current model
             if (localStorage.getItem(mru_option)) {
-                var restore_mru_list = JSON.parse(localStorage.getItem(mru_option));
-                if (restore_mru_list[key]) {
-                    var queue = restore_mru_list[key];
+                var restore_mru_ids = JSON.parse(localStorage.getItem(mru_option));
+                if (restore_mru_ids[key]) {
+                    var queue = restore_mru_ids[key];
                     // if the element doesn't exist in the stack
                     if (queue.indexOf(self.get_value(true)) < 0 && self.get_value(true)){
                         if (queue.length < 5) {
@@ -319,7 +328,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                             // add the new element at the beginning
                             queue.unshift(self.get_value(true));
                         }
-                        restore_mru_list[key] = queue;
+                        restore_mru_ids[key] = queue;
                     }else{
                         // if the element already exist in the stack
                         if (queue.indexOf(self.get_value(true)) >= 0 && self.get_value(true)){
@@ -333,10 +342,10 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 }else{
                     // if the element is the first one
                     if (self.get_value(true)){
-                        restore_mru_list[key] = [self.get_value(true)];
+                        restore_mru_ids[key] = [self.get_value(true)];
                     }
                 }
-                localStorage.setItem(mru_option, JSON.stringify(restore_mru_list));
+                localStorage.setItem(mru_option, JSON.stringify(restore_mru_ids));
             }else {
                 // first time to create an entry in the localstorage
                 if (self.get_value(true)){
@@ -356,7 +365,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                     search_mru = self.is_option_set(self.view.ir_options['web_m2x_options.search_mru']);
 
                 if(can_search_mru || (search_mru_undef && search_mru)){
-                    self.update_mru_list();
+                    self.update_mru_ids();
                 }
             }
         }
