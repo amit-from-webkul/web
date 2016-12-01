@@ -157,9 +157,11 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 search_mru = self.is_option_set(self.view.ir_options['web_m2x_options.search_mru']);
 
             var mru_list = self.get_search_mru();
+            var in_search_mru = false;
             if(search_val == "" && (can_search_mru || (search_mru_undef && search_mru))){
                 if (!_(mru_list).isEmpty()){
                     domain_list.push(mru_list);
+                    in_search_mru = true;
                 }
             }
             this.last_query = search_val;
@@ -184,12 +186,16 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                 // possible selections for the m2o
                 var values = _.map(data, function (x) {
                     x[1] = x[1].split("\n")[0];
-                    return {
+                    var val= {
                         label: _.str.escapeHTML(x[1]),
                         value: x[1],
                         name: x[1],
                         id: x[0],
                     };
+                    if (in_search_mru){
+                        val['classname'] = 'web_m2x_dropdown_option_mru';
+                    }
+                    return val;
                 });
 
                 // Search result value colors
@@ -217,23 +223,13 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
                                     def.resolve(values);
                                 });
                 }
-                // add label favorites if favorites option is set and
-                // search_val is empty
-                if(search_val == "" && (can_search_mru || (search_mru_undef && search_mru))){
-                    if (!_(mru_list).isEmpty() && !_(values).isEmpty()){
-                        values.unshift({
-                            label: _t("Most Recently Used:"),
-                            // classname: 'oe_m2o_dropdown_option',
-                        });
-                    }
-                }
 
                 // search more... if more results that max
                 var can_search_more = (self.options && self.is_option_set(self.options.search_more)),
                     search_more_undef = _.isUndefined(self.options.search_more) && _.isUndefined(self.view.ir_options['web_m2x_options.search_more']),
                     search_more = self.is_option_set(self.view.ir_options['web_m2x_options.search_more']);
 
-                if (values.length > self.limit && (can_search_more || search_more_undef || search_more)) {
+                if ((values.length > self.limit || in_search_mru) && (can_search_more || search_more_undef || search_more)) {
                     values = values.slice(0, self.limit);
                     values.push({
                         label: _t("Search More..."),
