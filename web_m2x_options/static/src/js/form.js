@@ -264,7 +264,7 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             'click .o_delete': function(e) {
                 this.remove_id($(e.target).parent().data('id'));
             },
-            'click .badge': 'open_badge',
+            'click .o_badge_text': 'open_badge',
             'mousedown .o_colorpicker span': 'update_color',
             'focusout .o_colorpicker': 'close_color_picker',
         },
@@ -411,15 +411,17 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             var self = this;
             var open = (self.options && self.is_option_set(self.options.open));
             if(open){
-                self.mutex.exec(function(){
-                    var id = parseInt($(ev.currentTarget).data('id'));
-                    self.do_action({
-                        type: 'ir.actions.act_window',
-                        res_model: self.field.relation,
-                        views: [[false, 'form']],
-                        res_id: id,
-                        target: "new"
-                    });
+                this.mutex.exec(function(){
+                    var id = parseInt($(ev.target).parent().data('id'));
+                    if(id){
+                        self.do_action({
+                            type: 'ir.actions.act_window',
+                            res_model: self.field.relation,
+                            views: [[false, 'form']],
+                            res_id: id,
+                            target: "new"
+                        });
+                    }
                 }.bind(this));
             }else{
                 self.open_color_picker(ev);
