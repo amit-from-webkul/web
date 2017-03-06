@@ -11,6 +11,26 @@ var py = window.py;
 /** copied from pyeval and not modified but required since not publicly
 exposed by web.pyeval**/
 
+// recursively wraps JS objects passed into the context to attributedicts
+// which jsonify back to JS objects
+function wrap(value) {
+    if (value === null) { return py.None; }
+
+    switch (typeof value) {
+    case 'undefined': throw new Error("No conversion for undefined");
+    case 'boolean': return py.bool.fromJSON(value);
+    case 'number': return py.float.fromJSON(value);
+    case 'string': return py.str.fromJSON(value);
+    }
+
+    switch(value.constructor) {
+    case Object: return wrapping_dict.fromJSON(value);
+    case Array: return wrapping_list.fromJSON(value);
+    }
+
+    throw new Error("ValueError: unable to wrap " + value);
+}
+
 var wrapping_dict = py.type('wrapping_dict', null, {
     __init__: function () {
         this._store = {};
