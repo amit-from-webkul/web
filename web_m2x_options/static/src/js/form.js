@@ -375,6 +375,9 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
     form_relational.FieldMany2ManyTags.include({
         init: function () {
             this.events["click .badge"] = "open_badge";
+            this.events["click .o_delete"] = function(e) {
+                this.remove_id($(e.target).parent().data('id'));
+            };
             return this._super.apply(this, arguments);
         },
         show_error_displayer: function () {
@@ -520,15 +523,17 @@ odoo.define('web_m2x_options.web_m2x_options', function (require) {
             var self = this;
             var open = (self.options && self.is_option_set(self.options.open));
             if(open){
-                self.mutex.exec(function(){
-                    var id = parseInt($(ev.currentTarget).data('id'));
-                    self.do_action({
-                        type: 'ir.actions.act_window',
-                        res_model: self.field.relation,
-                        views: [[false, 'form']],
-                        res_id: id,
-                        target: "new"
-                    });
+                this.mutex.exec(function(){
+                    var id = parseInt($(ev.target).parent().data('id'));
+                    if(id){
+                        self.do_action({
+                            type: 'ir.actions.act_window',
+                            res_model: self.field.relation,
+                            views: [[false, 'form']],
+                            res_id: id,
+                            target: "new"
+                        });
+                    }
                 }.bind(this));
             }else{
                 self.open_color_picker(ev);
