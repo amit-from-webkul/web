@@ -27,7 +27,9 @@ addon | version | summary
 [web_export_view](web_export_view/) | 9.0.1.0.1 | Export Current View
 [web_favicon](web_favicon/) | 9.0.1.0.0 | Allows to set a custom shortcut icon (aka favicon)
 [web_hide_db_manager_link](web_hide_db_manager_link/) | 9.0.1.0.0 | Hide link to database manager in login screen
-[web_m2x_options](web_m2x_options/) | 9.0.1.0.0 | web_m2x_options
+[web_listview_custom_element_number](web_listview_custom_element_number/) | 9.0.1.0.0 | Allow users to set manually a quantity of items to display in a tree view
+[web_m2x_options](web_m2x_options/) | 9.0.1.1.0 | web_m2x_options
+[web_menu_collapsible](web_menu_collapsible/) | 9.0.1.0.0 | Foldable second level Odoo menu
 [web_notify](web_notify/) | 9.0.1.0.0 | Send notification messages to user
 [web_readonly_bypass](web_readonly_bypass/) | 9.0.1.0.1 | Allow to save onchange modifications to readonly fields
 [web_responsive](web_responsive/) | 9.0.2.0.0 | It provides a mobile compliant interface for Odoo Community web
@@ -39,6 +41,7 @@ addon | version | summary
 [web_tree_image](web_tree_image/) | 9.0.1.1.0 | Show images in tree views
 [web_tree_many2one_clickable](web_tree_many2one_clickable/) | 9.0.1.0.0 | Open the linked resource when clicking on their name
 [web_widget_color](web_widget_color/) | 9.0.1.0.0 | Web Widget Color
+[web_widget_datepicker_options](web_widget_datepicker_options/) | 9.0.1.0.0 | web_widget_datepicker_options
 [web_widget_float_formula](web_widget_float_formula/) | 9.0.1.0.0 | Allow use of simple formulas in float fields
 [web_widget_image_download](web_widget_image_download/) | 9.0.1.0.0 | Allows to download any image from its widget
 [web_widget_image_webcam](web_widget_image_webcam/) | 9.0.1.0.0 | Allows to take image with WebCam
@@ -65,7 +68,6 @@ addon | version | summary
 [web_ir_actions_act_window_message](web_ir_actions_act_window_message/) | 8.0.1.0.0 (unported) | Show a message box to users
 [web_ir_actions_act_window_page](web_ir_actions_act_window_page/) | 8.0.1.0.0 (unported) | Allows a developer to trigger a pager to show the previous or next next record in the form view
 [web_last_viewed_records](web_last_viewed_records/) | 8.0.1.0.0 (unported) | Last viewed records
-[web_listview_custom_element_number](web_listview_custom_element_number/) | 8.0.1.0.0 (unported) | Allow users to set manually a quantity of items to display in a tree view
 [web_menu_navbar_needaction](web_menu_navbar_needaction/) | 8.0.1.0.0 (unported) | Show the sum of submenus' needaction counters in main menu
 [web_option_auto_color](web_option_auto_color/) | 8.0.0.1.0 (unported) | Web Option Auto Color
 [web_polymorphic_many2one](web_polymorphic_many2one/) | 0.2 (unported) | Web Polymorphic Many2One
@@ -74,7 +76,6 @@ addon | version | summary
 [web_sheet_full_width_selective](web_sheet_full_width_selective/) | 8.0.0.1.0 (unported) | Show selected sheets with full width
 [web_shortcuts](web_shortcuts/) | 8.0.1.0.0 (unported) | Web Shortcuts
 [web_switch_company_warning](web_switch_company_warning/) | 8.0.0.1.0 (unported) | Show a warning if current company has been switched in another tab or window.
-[web_widget_datepicker_options](web_widget_datepicker_options/) | 8.0.1.0.0 (unported) | web_widget_datepicker_options
 [web_widget_text_markdown](web_widget_text_markdown/) | 8.0.1.0.0 (unported) | web_widget_text_markdown
 
 [//]: # (end addons)
