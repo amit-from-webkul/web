@@ -38,6 +38,9 @@ odoo.define('web.web_ir_actions_act_window_message', function (require) {
                     title: action.title,
                     $content: $('<div>', {
                         text: action.message,
+                        css: {
+                            'white-space': 'pre-line',
+                        }
                     }),
                     buttons: buttons.concat(
                         this.ir_actions_act_window_message_get_buttons(

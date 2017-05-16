@@ -71,6 +71,7 @@ Contributors
 
 * Holger Brunn <hbrunn@therp.nl>
 * Zakaria Makrelouf (ACSONE SA/NV) <z.makrelouf@gmail.com>
+* Benjamin Willig (ACSONE SA/NV) <benjamin.willig@acsone.eu>
 
 Maintainer
 ----------
