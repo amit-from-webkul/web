@@ -31,17 +31,28 @@ odoo.define('web.web_ir_actions_act_window_message', function (require) {
                 })
             }
 
+            var is_html = action.is_html_message === true;
+            var content_properties = {};
+
+            if (is_html) {
+                content_properties = {
+                    html: action.message,
+                }
+            } else {
+                content_properties = {
+                    text: action.message,
+                    css: {
+                        'white-space': 'pre-line',
+                    }
+                }
+            }
+
             var dialog = new Dialog(
                 this,
                 _.extend({
                     size: 'medium',
                     title: action.title,
-                    $content: $('<div>', {
-                        text: action.message,
-                        css: {
-                            'white-space': 'pre-line',
-                        }
-                    }),
+                    $content: $('<div>', content_properties),
                     buttons: buttons.concat(
                         this.ir_actions_act_window_message_get_buttons(
                             action, function() { dialog.close() })
