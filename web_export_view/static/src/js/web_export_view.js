@@ -14,7 +14,7 @@ odoo.define('web_export_view', function (require) {
         _redraw: function () {
             var self = this;
             this._super.apply(this, arguments);
-            if (self.getParent().renderer.viewType == 'list') {
+            if (self.getParent().renderer.viewType === 'list') {
                 self.$el.find('.o_dropdown').last().append(QWeb.render('WebExportTreeViewXls', {widget: self}));
                 self.$el.find('.export_treeview_xls').on('click', self.on_sidebar_export_treeview_xls);
             }
@@ -28,11 +28,11 @@ odoo.define('web_export_view', function (require) {
                 children = view.getChildren();
             if (children) {
                 children.every(function (child) {
-                    if (child.field && child.field.type == 'one2many') {
+                    if (child.field && child.field.type === 'one2many') {
                         view = child.viewmanager.views.list.controller;
                         return false; // break out of the loop
                     }
-                    if (child.field && child.field.type == 'many2many') {
+                    if (child.field && child.field.type === 'many2many') {
                         view = child.list_view;
                         return false; // break out of the loop
                     }
@@ -43,7 +43,7 @@ odoo.define('web_export_view', function (require) {
             var export_columns_names = [];
             var column_index = 0;
             $.each(view.renderer.columns, function () {
-                if (this.tag == 'field' && (this.attrs.widget === undefined || this.attrs.widget != 'handle')) {
+                if (this.tag === 'field' && (this.attrs.widget === undefined || this.attrs.widget !== 'handle')) {
                     // non-fields like `_group` or buttons
                     export_columns_keys.push(column_index);
                     export_columns_names.push(view.$el.find('.o_list_view > thead > tr> th[title]:eq('+column_index+')')[0].textContent);
