@@ -42,11 +42,13 @@ odoo.define('web_export_view', function (require) {
             var export_columns_keys = [];
             var export_columns_names = [];
             var column_index = 0;
+            var column_header_selector;
             $.each(view.renderer.columns, function () {
                 if (this.tag === 'field' && (this.attrs.widget === undefined || this.attrs.widget !== 'handle')) {
                     // non-fields like `_group` or buttons
                     export_columns_keys.push(column_index);
-                    export_columns_names.push(view.$el.find('.o_list_view > thead > tr> th[title]:eq('+column_index+')')[0].textContent);
+                    column_header_selector = '.o_list_view > thead > tr> th:not([class*="o_list_record_selector"]):eq('+column_index+')';
+                    export_columns_names.push(view.$el.find(column_header_selector)[0].textContent);
                 }
                 column_index ++;
             });
