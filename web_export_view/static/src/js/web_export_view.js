@@ -71,7 +71,11 @@ odoo.define('web_export_view', function (require) {
                         }
                         else {
                             var text = $cell.text().trim();
-                            if ($cell.hasClass("o_list_number")) {
+                            var is_number = (
+                                $cell.hasClass('o_list_number') &&
+                                !$cell.hasClass('o_float_time_cell')
+                            );
+                            if (is_number) {
                                 export_row.push(parseFloat(
                                     text
                                     // Remove thousands separator
@@ -82,8 +86,7 @@ odoo.define('web_export_view', function (require) {
                                     // Remove non-numeric characters
                                     .replace(/[^\d\.-]/g, "")
                                 ));
-                            }
-                            else {
+                            } else {
                                 export_row.push(text);
                             }
                         }
