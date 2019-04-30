@@ -9,7 +9,7 @@
     background: #DCDCDC;
 }
 
-.vis-item .vis-item-overflow {
+.vis-item .vis-item-overflow:hover {
     overflow: visible;
 }
 
