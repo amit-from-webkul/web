@@ -15,6 +15,8 @@ class CalendarEvent(models.Model):
                                 compute='_compute_user_ids',
                                 string="Users",
                                 store=True)
+    color_id = fields.Many2one('calendar.event.color', string="Meeting type (color)")
+    color = fields.Char(string=" ", related="color_id.color")
 
     @api.multi
     @api.depends('attendee_ids')
@@ -22,3 +24,10 @@ class CalendarEvent(models.Model):
         for event in self:
             event.user_ids = event.attendee_ids.\
                 mapped('partner_id').mapped('user_ids')
+
+
+class CalendarEventColor(models.Model):
+    _name = "calendar.event.color"
+
+    name = fields.Char('Meeting Type', required=True)
+    color = fields.Char('Color', required=True)

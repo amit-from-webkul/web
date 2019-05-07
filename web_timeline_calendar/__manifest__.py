@@ -16,6 +16,11 @@
     ],
     'data': [
         'views/calendar_event.xml',
+        'web_widget_color',
+    ],
+    'data': [
+        'views/calendar_event.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [
     ],
