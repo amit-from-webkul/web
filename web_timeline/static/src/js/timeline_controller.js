@@ -106,7 +106,10 @@ odoo.define('web_timeline.TimelineController', function (require) {
             this.renderer = event.data.renderer;
             var rights = event.data.rights;
             var item = event.data.item;
-            var id = item.evt.id.split('_')[0];
+            var id = item.evt.id;
+            if (this.renderer.x2x) {
+                id = id.split('_')[0];
+            }
             var title = item.evt.__name;
             if (this.open_popup_action) {
                 new dialogs.FormViewDialog(this, {
@@ -192,7 +195,7 @@ odoo.define('web_timeline.TimelineController', function (require) {
                     model: self.model.modelName,
                     method: 'write',
                     args: [
-                        [item.event.data.item.id.split('_')[0]],
+                        [self.renderer.x2x ? item.event.data.item.id.split('_')[0] : item.event.data.item.id],
                         item.data,
                     ],
                     context: self.getSession().user_context,
@@ -222,7 +225,7 @@ odoo.define('web_timeline.TimelineController', function (require) {
                     model: self.model.modelName,
                     method: 'unlink',
                     args: [
-                        [event.data.item.id.split('_')[0]],
+                        [self.renderer.x2x ? event.data.item.id.split('_')[0] : event.data.item.id],
                     ],
                     context: self.getSession().user_context,
                 }).then(function () {
@@ -320,6 +323,9 @@ odoo.define('web_timeline.TimelineController', function (require) {
                 var new_event = self.renderer.event_data_transform(records[0]);
                 var items = self.renderer.timeline.itemsData;
                 items.add(new_event);
+                if (self.renderer.x2x) {
+                    self.renderer.updateGroups(records);
+                }
                 self.renderer.timeline.setItems(items);
                 self.reload();
             });

@@ -299,7 +299,6 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
 
             this.canvas.draw_arrow(from.dom.box, to.dom.box, defaults.line_color, defaults.line_width);
         },
-
         /**
          * Load display_name of records.
          *
@@ -353,13 +352,50 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
                 });
             };
         },
-
+        updateGroups: function(events) {
+            var self = this;
+            var group_ids = [];
+            // Get the missing groups from new events
+            _.each(events, function (event) {
+                var group = event[_.first(self.last_group_bys)];
+                if (group) {
+                    _.each(group, function (gr) {
+                        var found = _.find(self.groups, function(existing_group) {
+                            return existing_group.id == gr
+                        });
+                        if (found === undefined) {
+                            group_ids.push(gr);
+                        }
+                    });
+                }
+            });
+            var group_by_field = this.view.fields[self.last_group_bys];
+            self._rpc({
+                model: group_by_field.relation,
+                method: 'name_get',
+                args: [
+                    group_ids,
+                ],
+                context: self.getSession().user_context,
+            }).then(function(names) {
+                _.each(names, function (gr_name) {
+                    self.groups.push({
+                        id: gr_name[0],
+                        content: gr_name[1],
+                    })
+                    self.$select_groups.append($("<option value='" + gr_name[0] + "' selected='selected'>" + gr_name[1] + "</option>"));
+                });
+                self.$select_groups.multiselect('rebuild');
+                self.timeline.setGroups();
+                self.updateSelectedGroups();
+                return true;
+            });
+        },
         arrayRemove: function (arr, id) {
            return arr.filter( function (elmt) {
                return elmt.id != id;
            });
         },
-
         updateSelectedGroups: function() {
             var self = this;
             var selected = self.$select_groups.find("option:selected");
@@ -371,6 +407,29 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
                 })
             });
             self.timeline.setGroups(self.selected_groups);
+        },
+        createSelectGroups: function () {
+            var self = this;
+            var select_groups = $(core.qweb.render('TimelineSelectGroups', {'groups': self.groups}));
+            self.$el.find('.selected-groups').html(select_groups);
+            self.$select_groups = select_groups;
+            select_groups.multiselect({
+                buttonWidth: '350px',
+                maxHeight: 400,
+                enableFiltering: true,
+                enableClickableOptGroups: true,
+                includeSelectAllOption: true,
+                allSelectedText: _t('All groups selected'),
+                onChange: function(element, checked) {
+                    self.updateSelectedGroups();
+                },
+                onSelectAll: function() {
+                    self.updateSelectedGroups();
+                },
+                onDeselectAll: function() {
+                    self.updateSelectedGroups();
+                },
+            });
         },
         /**
          * Set groups and events.
@@ -399,26 +458,7 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
             if (x2x) {
                 groups = this.groups;
                 this.selected_groups = this.groups;
-                var select_groups = $(core.qweb.render('TimelineSelectGroups', {'groups': this.groups}));
-                this.$el.find('.selected-groups').html(select_groups);
-                this.$select_groups = select_groups;
-                select_groups.multiselect({
-                    buttonWidth: '350px',
-                    maxHeight: 400,
-                    enableFiltering: true,
-                    enableClickableOptGroups: true,
-                    includeSelectAllOption: true,
-                    allSelectedText: _t('All groups selected'),
-                    onChange: function(element, checked) {
-                        self.updateSelectedGroups();
-                    },
-                    onSelectAll: function() {
-                        self.updateSelectedGroups();
-                    },
-                    onDeselectAll: function() {
-                        self.updateSelectedGroups();
-                    },
-                });
+                this.createSelectGroups();
             } else {
                 if (this.$select_groups !== undefined) {
                     this.$el.find('.selected-groups').html('');
