@@ -29,5 +29,5 @@ class CalendarEvent(models.Model):
 class CalendarEventColor(models.Model):
     _name = "calendar.event.color"
 
-    name = fields.Char('Meeting Type', required=True)
+    name = fields.Char('Meeting Type', required=True, translate=True)
     color = fields.Char('Color', required=True)

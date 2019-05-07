@@ -21,6 +21,7 @@
     'data': [
         'views/calendar_event.xml',
         'security/ir.model.access.csv',
+        'data/calendar.event.color.csv',
     ],
     'demo': [
     ],

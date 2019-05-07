@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_calendar_event_timeline" model="ir.ui.view">
-
     <record id="calendar_event_timeline_view_timeline" model="ir.ui.view">
         <field name="model">calendar.event</field>
         <field name="type">timeline</field>
@@ -11,7 +9,6 @@
                       string="Meetings"
                       default_group_by="user_ids"
                       event_open_popup="true"
-                      zoomKey="ctrlKey">
                       zoomKey="ctrlKey"
                       color_field="color"
                       mode="day">
