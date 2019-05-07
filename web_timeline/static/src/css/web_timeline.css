@@ -29,3 +29,7 @@
     left: 0px;
     top: 0px;
 }
+
+.selected-groups {
+    display: inline-flex;
+}

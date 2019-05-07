@@ -10,7 +10,7 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
     var field_utils = require('web.field_utils');
     var TimelineCanvas = require('web_timeline.TimelineCanvas');
 
-
+    core.qweb.add_template("/web_timeline/static/src/xml/web_timeline.xml");
     var _t = core._t;
 
     var TimelineRenderer = AbstractRenderer.extend({
@@ -63,6 +63,7 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
                 throw new Error(_t("Timeline view has not defined 'date_start' attribute."));
             }
             this._super.apply(this, self);
+
         },
 
         /**
@@ -312,7 +313,7 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
             if (group_by_field.type == 'one2many' | group_by_field.type == 'many2many') {
                 self.x2x = true;
                 return self.split_groups_x2x(events, group_bys).then(function (groups) {
-                    self.groups = groups;
+                    self.groups = groups.sort((a, b) => (a.content > b.content) ? 1 : -1);
                     return self._rpc({
                         model: self.modelName,
                         method: 'name_get',
@@ -353,6 +354,24 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
             };
         },
 
+        arrayRemove: function (arr, id) {
+           return arr.filter( function (elmt) {
+               return elmt.id != id;
+           });
+        },
+
+        updateSelectedGroups: function() {
+            var self = this;
+            var selected = self.$select_groups.find("option:selected");
+            self.selected_groups = [];
+            _.each(selected, function (elmt) {
+                self.selected_groups.push({
+                    id: elmt.value,
+                    content: elmt.text,
+                })
+            });
+            self.timeline.setGroups(self.selected_groups);
+        },
         /**
          * Set groups and events.
          *
@@ -379,7 +398,32 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
             });
             if (x2x) {
                 groups = this.groups;
+                this.selected_groups = this.groups;
+                var select_groups = $(core.qweb.render('TimelineSelectGroups', {'groups': this.groups}));
+                this.$el.find('.selected-groups').html(select_groups);
+                this.$select_groups = select_groups;
+                select_groups.multiselect({
+                    buttonWidth: '350px',
+                    maxHeight: 400,
+                    enableFiltering: true,
+                    enableClickableOptGroups: true,
+                    includeSelectAllOption: true,
+                    allSelectedText: _t('All groups selected'),
+                    onChange: function(element, checked) {
+                        self.updateSelectedGroups();
+                    },
+                    onSelectAll: function() {
+                        self.updateSelectedGroups();
+                    },
+                    onDeselectAll: function() {
+                        self.updateSelectedGroups();
+                    },
+                });
             } else {
+                if (this.$select_groups !== undefined) {
+                    this.$el.find('.selected-groups').html('');
+                    this.$select_groups.remove();
+                }
                 groups = this.split_groups(events, group_bys);
             }
             this.timeline.setGroups(groups);
@@ -505,11 +549,16 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
             } else {
                 group = -1;
             }
-            _.each(self.colors, function (color) {
-                if (eval("'" + evt[color.field] + "' " + color.opt + " '" + color.value + "'")) {
-                    self.color = color.color;
-                }
-            });
+            var color = null;
+            if (self.arch.attrs.color_field !== undefined) {
+                color = evt[self.arch.attrs.color_field];
+            } else {
+                _.each(self.colors, function (col) {
+                    if (eval("'" + evt[col.field] + "' " + col.opt + " '" + col.value + "'")) {
+                        color = col.color;
+                    }
+                });
+            }
 
             var content = _.isUndefined(evt.__name) ? evt.display_name : evt.__name;
             if (this.arch.children.length) {
@@ -522,13 +571,12 @@ odoo.define('web_timeline.TimelineRenderer', function (require) {
                 'id': evt.id,
                 'group': group,
                 'evt': evt,
-                'style': 'background-color: ' + self.color + ';'
+                'style': 'background-color: ' + color + ';'
             };
             // Check if the event is instantaneous, if so, display it with a point on the timeline (no 'end')
             if (date_stop && !moment(date_start).isSame(date_stop)) {
                 r.end = date_stop;
             }
-            self.color = null;
             return r;
         },
 
