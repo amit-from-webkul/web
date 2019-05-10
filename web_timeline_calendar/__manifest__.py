@@ -13,9 +13,6 @@
         'calendar',
         'web_timeline',
         'prg_calendar_tree_default_period',
-    ],
-    'data': [
-        'views/calendar_event.xml',
         'web_widget_color',
     ],
     'data': [
