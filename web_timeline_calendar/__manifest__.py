@@ -9,16 +9,11 @@
     'license': 'AGPL-3',
     'author': 'ACSONE SA/NV, Odoo Community Association (OCA)',
     'website': 'https://acsone.eu/',
-    'depends': [
-        'calendar',
-        'web_timeline',
-        'web_widget_color',
-    ],
+    'depends': ['calendar', 'web_timeline', 'web_widget_color'],
     'data': [
-        'views/calendar_event.xml',
         'security/ir.model.access.csv',
-        'data/calendar.event.color.csv',
+        'views/calendar_event.xml',
+        'views/calendar_event_color.xml',
     ],
-    'demo': [
-    ],
+    'demo': ['demo/calendar.event.color.csv'],
 }
