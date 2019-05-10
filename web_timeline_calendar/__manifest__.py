@@ -12,7 +12,6 @@
     'depends': [
         'calendar',
         'web_timeline',
-        'prg_calendar_tree_default_period',
         'web_widget_color',
     ],
     'data': [

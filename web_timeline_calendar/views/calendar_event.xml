@@ -18,7 +18,6 @@
 
     <record id="calendar.action_calendar_event" model="ir.actions.act_window">
         <field name="view_mode">calendar,timeline,tree</field>
-        <field name="context">{"search_default_week": 1}</field>
     </record>
 
     <record id="calendar_event_form_inherit" model="ir.ui.view">
